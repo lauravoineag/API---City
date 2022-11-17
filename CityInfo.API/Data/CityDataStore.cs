@@ -2,11 +2,13 @@
 
 namespace CityInfo.API.Data;
 
-public class CityDataStore
+public class CitiesDataStore
 {
     public List<City> Cities { get; set; }
 
-    public CityDataStore()
+    public static CitiesDataStore Current { get; } = new CitiesDataStore();
+
+    public CitiesDataStore()
     {
         //init dummy data
         Cities = new List<City>()

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CityInfo.API.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CityInfo.API.Controllers;
 
@@ -9,12 +10,7 @@ public class CitiesController:ControllerBase
     [HttpGet]
     public JsonResult GetCities()
     {
-        return new JsonResult(
-            new List<object>
-            {
-                new { id = 1, Name = "Manchester" },
-                new { id = 2, Name = "London" }
-            });
+        return new JsonResult(CitiesDataStore.Current.Cities);
     }
     
 }
