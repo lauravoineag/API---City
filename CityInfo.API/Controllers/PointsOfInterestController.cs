@@ -8,16 +8,28 @@ namespace CityInfo.API.Controllers
     [ApiController]
     public class PointsOfInterestController : ControllerBase
     {
+        private readonly IPointsOfInterestDataStore _pointsOfInterestDataStore;
+
+        public PointsOfInterestController(IPointsOfInterestDataStore pointsOfInterestDataStore)
+        {
+            _pointsOfInterestDataStore = pointsOfInterestDataStore;
+        }
+        
         [HttpGet]
         public ActionResult<IEnumerable<PointOfInterest>> GetPointsOfInterest(int cityId)
         {
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if (city==null)
+            var pointsOfInterest = _pointsOfInterestDataStore.GetPointsOfInterestForCity(cityId);
+            if (pointsOfInterest==null)
             {
                 return NotFound();
             }
 
-            return Ok(city.PointsOfInterest);
+            return Ok(pointsOfInterest);
         }
+    }
+    
+    public interface IPointsOfInterestDataStore
+    {
+        IEnumerable<PointOfInterest> GetPointsOfInterestForCity(int cityId);
     }
 }

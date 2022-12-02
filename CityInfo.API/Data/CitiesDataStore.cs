@@ -1,17 +1,36 @@
-﻿using CityInfo.API.Models;
+﻿using CityInfo.API.Controllers;
+using CityInfo.API.Models;
 
 namespace CityInfo.API.Data;
 
-public class CitiesDataStore
+public class CitiesDataStore:ICitiesDataStore,IPointsOfInterestDataStore
 {
-    public List<City> Cities { get; set; }
+    private readonly List<City> _cities;
+    
+    public IEnumerable<City> GetCities()
+    {
+        return _cities;
+    }
 
-    public static CitiesDataStore Current { get; } = new CitiesDataStore();
+    public City GetCity(int id)
+    {
+        return _cities.FirstOrDefault(c => c.Id == id);
+    }
+    
+    public IEnumerable<PointOfInterest> GetPointsOfInterestForCity(int cityId)
+    {
+        var city=_cities.FirstOrDefault(c => c.Id == cityId);
+        if (city==null)
+        {
+            return null;
+        } 
+        return city.PointsOfInterest;
+    }
 
     public CitiesDataStore()
     {
         //init dummy data
-        Cities = new List<City>()
+        _cities = new List<City>()
         {
             new City()
             {
